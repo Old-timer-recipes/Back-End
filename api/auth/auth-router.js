@@ -4,16 +4,23 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../../config/secrets');
 
+// middlewares
+
+const { checkUsernameUnique } = require('../middlewares/unique-user');
+const { checkPayload } = require('../middlewares/user-schema');
+const { checkUsernameExists } = require('../middlewares/validate-user');
+
 const Users = require('../users/users-modal');
 const { isValid } = require('../users/users-service');
+
 // register
-router.post('/register', (req, res) => {
+router.post('/register', checkPayload, checkUsernameUnique, (req, res) => {
   const credentials = req.body;
   if (isValid(credentials)) {
     const rounds = 10;
 
     //  hash the raw password
-    const hash = bcryptjs.hashSync(credentials.password, rounds);
+    const hash = bcrypt.hashSync(credentials.password, rounds);
 
     credentials.password = hash;
 
@@ -34,7 +41,7 @@ router.post('/register', (req, res) => {
 });
 
 // login
-router.post('/login', (req, res) => {
+router.post('/login', checkPayload, checkUsernameExists, (req, res) => {
   const { username, password } = req.body;
   if (isValid(req.body)) {
     Users.findBy({ username: username })
