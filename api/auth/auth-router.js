@@ -47,7 +47,7 @@ router.post('/login', checkPayload, checkUsernameExists, (req, res) => {
     Users.findBy({ username: username })
       .then(([user]) => {
         const token = TokenGenerator(user);
-        if (user && bcryptjs.compareSync(password, user.password)) {
+        if (user && bcrypt.compareSync(password, user.password)) {
           res
             .status(200)
             .json({ message: `Welcome back ${user.username}`, token });

@@ -2,10 +2,11 @@
 //   next();
 // }
 
+const Users = require('../users/users-modal');
 // username must be in the db already for a user to login
 const checkUsernameExists = async (req, res, next) => {
   try {
-    const rows = await User.findBy({ username: req.body.username });
+    const rows = await Users.findBy({ username: req.body.username });
     if (rows.length) {
       req.userData = rows[0];
       next();
