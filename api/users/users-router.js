@@ -30,3 +30,4 @@ router.get('/:id', (req, res) => {
       res.status(500).json({ error: 'the data could not be retrieved' });
     });
 });
+module.exports = router;
