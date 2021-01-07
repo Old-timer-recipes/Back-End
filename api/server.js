@@ -16,7 +16,7 @@ server.use(express.json());
 
 server.use('/api/auth', authRouter);
 server.use('/api/users', usersrouter);
-server.use('/api/recipes', restrict, recipesRouter); // only logged-in users should have access!
+server.use('/api/recipes', recipesRouter); // only logged-in users should have access!
 server.get('/', (req, res) => {
   res.status(200).json('Up');
 });
